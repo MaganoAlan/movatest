@@ -38,9 +38,6 @@ export default {
         });
       }
     });
-  },
-
-  mounted() {
     Country.countryCode(this.alpha).then((response) => {
       this.country = response.data;
       console.log(response.data);

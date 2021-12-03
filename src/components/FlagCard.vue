@@ -6,7 +6,7 @@
 export default {
   name: "FlagCard",
   props: {
-    src: Object,
+    src: String,
   },
 };
 </script>

@@ -1,23 +1,19 @@
 <template>
   <PrimaryTitle title="Home Page" />
   Filtrar por
-  <select>
-    <option disabled selected label="Escolha uma opção"></option>
-    <option>Região</option>
-    <option>Capital</option>
-    <option>Lingua</option>
-    <option>País</option>
-    <option>Código de Ligação</option>
-  </select>
+  <v-select
+    placeholder="Escolha uma opção"
+    v-model="selectedFilter"
+    :options="['Região', 'Capital', 'Lingua', 'País', 'Código de Ligação']"
+  ></v-select>
+
   Região
-  <select>
-    <option disabled selected label="Escolha uma região"></option>
-    <option>Americas</option>
-    <option>Asia</option>
-    <option>Africa</option>
-    <option>Europa</option>
-    <option>Oceania</option>
-  </select>
+  <v-select
+    placeholder="Escolha uma opção"
+    :getOptionLabel="(opt) => opt.capital"
+    :options="countries"
+  ></v-select>
+
   <SearchButton />
   <div id="flagcontainer">
     <div id="apicall" v-for="country of countries" :key="country.id">
@@ -33,22 +29,32 @@ import FlagCard from "../../components/FlagCard.vue";
 
 import PrimaryTitle from "../../components/PrimaryTitle.vue";
 import SearchButton from "../../components/SearchButton.vue";
-
+import vSelect from "vue-select";
 import Country from "../../services/countries";
 
 export default {
   name: "Home",
-  components: { PrimaryTitle, FlagCard, SearchButton },
+  components: { PrimaryTitle, FlagCard, SearchButton, vSelect },
 
   data() {
     return {
       countries: [],
+      selectedFilter: "País",
+      selectedOption: null,
     };
   },
 
-  methods: {},
+  methods: {
+    clickSearch() {
+      this.selectedFilter = "Região";
+      return this.Country.countryRegion().then((response) => {
+        this.countries = response.data;
+        console.log("update funcionou");
+      });
+    },
+  },
 
-  mounted() {
+  created() {
     Country.listar().then((response) => {
       this.countries = response.data;
       console.log(response.data);

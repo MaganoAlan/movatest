@@ -15,5 +15,6 @@ export default {
   border-radius: 7px;
   padding-right: 2%;
   padding-left: 2%;
+  border: none;
 }
 </style>

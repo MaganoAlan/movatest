@@ -15,5 +15,6 @@ export default {
 h1 {
   margin: 1%;
   color: cornflowerblue;
+  text-align: center;
 }
 </style>

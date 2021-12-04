@@ -1,20 +1,21 @@
 <template>
-  <PrimaryTitle title="Home Page" />
-  Filtrar por
-  <v-select
-    placeholder="Escolha uma opção"
-    v-model="selectedFilter"
-    :options="['Região', 'Capital', 'Lingua', 'País', 'Código de Ligação']"
-  ></v-select>
+  <div id="forsearch">
+    <v-select
+      id="sel"
+      placeholder="Escolha uma opção"
+      v-model="selectedFilter"
+      :options="['Região', 'Capital', 'Lingua', 'País', 'Código de Ligação']"
+    ></v-select>
 
-  Região
-  <v-select
-    placeholder="Escolha uma opção"
-    :getOptionLabel="(opt) => opt.capital"
-    :options="countries"
-  ></v-select>
+    <v-select
+      id="sel"
+      placeholder="Escolha uma opção"
+      :getOptionLabel="(opt) => opt.capital"
+      :options="countries"
+    ></v-select>
 
-  <SearchButton />
+    <SearchButton /><button @click="clickSearch">Perquisa</button>
+  </div>
   <div id="flagcontainer">
     <div id="apicall" v-for="country of countries" :key="country.id">
       <router-link :to="'/details/' + country.alpha3Code">
@@ -27,14 +28,13 @@
 <script>
 import FlagCard from "../../components/FlagCard.vue";
 
-import PrimaryTitle from "../../components/PrimaryTitle.vue";
 import SearchButton from "../../components/SearchButton.vue";
 import vSelect from "vue-select";
 import Country from "../../services/countries";
 
 export default {
   name: "Home",
-  components: { PrimaryTitle, FlagCard, SearchButton, vSelect },
+  components: { FlagCard, SearchButton, vSelect },
 
   data() {
     return {
@@ -47,10 +47,6 @@ export default {
   methods: {
     clickSearch() {
       this.selectedFilter = "Região";
-      return this.Country.countryRegion().then((response) => {
-        this.countries = response.data;
-        console.log("update funcionou");
-      });
     },
   },
 
@@ -73,5 +69,14 @@ export default {
 }
 #apicall {
   margin: 4%;
+}
+#sel {
+  width: 20vw;
+}
+#forsearch {
+  margin: 2%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
 }
 </style>

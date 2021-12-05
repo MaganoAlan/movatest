@@ -9,5 +9,11 @@ export default {
   },
   countryRegion: (region) => http.get(`region/${region}`),
 
-  countryLanguage: (languages) => http.get(`languages/${languages}`),
+  countryLanguage: (languages) => http.get(`lang/${languages}`),
+
+  countryName: (name) => http.get(`/name/${name}`),
+
+  callingCode: (code) => http.get(`/callingcode/${code}`),
+
+  capitalCity: (capital) => http.get(`/capital/${capital}`),
 };

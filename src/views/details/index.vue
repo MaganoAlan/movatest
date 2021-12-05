@@ -4,7 +4,10 @@
     <div id="countryinfo">
       <p>Nome: {{ country.name }}</p>
       <p>Capital: {{ country.capital }}</p>
-      <p>Região: {{ country.region }}</p>
+      <p>
+        Região:<router-link to="/"> {{ country.region }}</router-link>
+      </p>
+
       <p>População: {{ country.population }}</p>
       <p>Subregião: {{ country.subregion }}</p>
     </div>

@@ -4,17 +4,33 @@
       id="sel"
       placeholder="Escolha uma opção"
       v-model="selectedFilter"
-      :options="['Região', 'Capital', 'Lingua', 'País', 'Código de Ligação']"
+      :clearable="false"
+      :options="['Região', 'Capital', 'Língua', 'País', 'Código de discagem']"
     ></v-select>
 
     <v-select
       id="sel"
-      placeholder="Escolha uma opção"
-      :getOptionLabel="(opt) => opt.capital"
-      :options="countries"
+      :title="selectedFilter"
+      :placeholder="'Filtrar por' + selectedFilter"
+      v-model="selectedOption"
+      :clearable="false"
+      :optionLabel="renderOption"
+      :options="
+        this.selectedFilter == 'Língua'
+          ? ['en', 'pt', 'es', 'it', 'fr']
+          : this.selectedFilter == 'Região'
+          ? ['=>Regiões', 'Asia', 'Africa', 'Americas', 'Europe', 'Oceania']
+          : this.selectedFilter == 'País'
+          ? ['=>Países', 'Brasil', 'Peru']
+          : this.selectedFilter == 'Código de discagem'
+          ? ['=>Códigos de discagem', '55', '51', '60']
+          : this.selectedFilter == 'Capital'
+          ? ['=>Capitais', 'Lima', 'Brasilia']
+          : ''
+      "
     ></v-select>
 
-    <SearchButton /><button @click="clickSearch">Perquisa</button>
+    <SearchButton @click="clickSearch" />
   </div>
   <div id="flagcontainer">
     <div id="apicall" v-for="country of countries" :key="country.id">
@@ -45,8 +61,47 @@ export default {
   },
 
   methods: {
+    renderOption(opt) {
+      if (this.countries.length > 0) {
+        if (this.selectedFilter === "Capital") {
+          return opt.capital;
+        } else {
+          return opt.name;
+        }
+      }
+    },
     clickSearch() {
-      this.selectedFilter = "Região";
+      console.log(` Filtro = ${this.selectedFilter}`);
+      console.log(` Opção = ${this.selectedOption}`);
+
+      if (this.selectedFilter == "Língua") {
+        Country.countryLanguage(this.selectedOption).then((response) => {
+          this.countries = response.data;
+          console.log(response.data);
+        });
+      } else if (this.selectedFilter == "Região") {
+        Country.countryRegion(this.selectedOption).then((response) => {
+          this.countries = response.data;
+          console.log(response.data);
+        });
+      } else if (this.selectedFilter == "País") {
+        Country.countryName(this.selectedOption).then((response) => {
+          this.countries = response.data;
+          console.log(response.data);
+        });
+      } else if (this.selectedFilter == "Código de discagem") {
+        Country.callingCode(this.selectedOption).then((response) => {
+          this.countries = response.data;
+          console.log(response.data);
+        });
+      } else if (this.selectedFilter == "Capital") {
+        Country.capitalCity(
+          this.selectedOption === null ? "all" : this.selectedOption
+        ).then((response) => {
+          this.countries = response.data;
+          console.log(response.data);
+        });
+      }
     },
   },
 
@@ -72,6 +127,7 @@ export default {
 }
 #sel {
   width: 20vw;
+  cursor: pointer;
 }
 #forsearch {
   margin: 2%;

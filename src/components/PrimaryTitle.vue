@@ -14,7 +14,7 @@ export default {
 <style scoped>
 h1 {
   margin: 1%;
-  color: cornflowerblue;
+  color: #6d2080;
   text-align: center;
 }
 </style>

@@ -16,5 +16,9 @@ export default {
   padding-right: 2%;
   padding-left: 2%;
   border: none;
+  cursor: pointer;
+}
+#search:hover {
+  background-color: #9f59b1;
 }
 </style>

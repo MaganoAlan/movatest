@@ -1,18 +1,15 @@
 <template id="temp">
   <div id="principal">
     <FlagCard :src="country.flag" />
-    <div id="countryinfo">
-      <p>Nome: {{ country.name }}</p>
-      <p>Capital: {{ country.capital }}</p>
-      <p>
-        Região:<router-link to="/"> {{ country.region }}</router-link>
-      </p>
-
-      <p>População: {{ country.population }}</p>
-      <p>Subregião: {{ country.subregion }}</p>
+    <div>
+      <Field title="Nome" :value="country.name" />
+      <Field title="Capital" :value="country.capital" />
+      <Field title="Região" :value="country.region" :clickable="true" />
+      <Field title="Sub-região" :value="country.subregion" />
+      <Field title="População" :value="country.population" />
     </div>
   </div>
-  <PrimaryTitle title="Paises Vizinhos" />
+  <PrimaryTitle v-if="country.borders" title="Paises Vizinhos" />
   <div id="borders" v-for="code in country.borders" :key="code">
     <BorderCountry :code="code" />
   </div>
@@ -23,9 +20,9 @@ import Country from "../../services/countries";
 import FlagCard from "../../components/FlagCard.vue";
 import BorderCountry from "../../components/BorderCountry.vue";
 import PrimaryTitle from "../../components/PrimaryTitle.vue";
-
+import Field from "../../components/Field.vue";
 export default {
-  components: { FlagCard, BorderCountry, PrimaryTitle },
+  components: { FlagCard, BorderCountry, PrimaryTitle, Field },
   name: "Details",
 
   data() {

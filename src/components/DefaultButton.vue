@@ -19,7 +19,7 @@ export default {
   color: #6d2080;
   border: 1px solid #6d2080;
   box-sizing: border-box;
-  width: 7vw;
+  width: 9vw;
   margin: 3%;
   background: none;
   display: flex;
@@ -29,6 +29,25 @@ export default {
   align-items: center;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+@media (max-width: 480px) {
+  #btn {
+    color: #6d2080;
+    border: 1px solid #6d2080;
+    box-sizing: border-box;
+    width: 33vw;
+    margin: 2%;
+    background: none;
+    display: flex;
+    flex-direction: row;
+    align-content: space-around;
+    justify-content: space-between;
+    align-items: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 7%;
+  }
 }
 
 #back {

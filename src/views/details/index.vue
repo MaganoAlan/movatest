@@ -7,6 +7,11 @@
       <Field title="Região" :value="country.region" :clickable="true" />
       <Field title="Sub-região" :value="country.subregion" />
       <Field title="População" :value="country.population" />
+      <Field
+        title="Línguas"
+        v-if="country.languages"
+        :value="formatLanguages(country.languages)"
+      />
     </div>
   </div>
   <PrimaryTitle v-if="country.borders" title="Paises Vizinhos" />
@@ -33,6 +38,22 @@ export default {
 
   props: {
     alpha: String,
+  },
+
+  methods: {
+    formatLanguages(languages) {
+      let formatText = "";
+      languages.map((lang, i) => {
+        const isLast = languages.length - 1 === i;
+
+        formatText = formatText + lang.name;
+        if (!isLast) {
+          formatText = formatText + ", ";
+        }
+      });
+
+      return formatText;
+    },
   },
 
   created() {
@@ -65,6 +86,15 @@ export default {
   flex-direction: row;
   align-items: center;
   justify-content: space-evenly;
+}
+
+@media (max-width: 480px) {
+  #principal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+  }
 }
 #countryinfo {
   display: flex;

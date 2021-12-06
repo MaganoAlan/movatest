@@ -26,6 +26,6 @@ export default {
   font-size: 18px;
   color: #454545;
   line-height: 22px;
-  margin: 20px 0;
+  margin: 20px 20px;
 }
 </style>

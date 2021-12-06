@@ -29,18 +29,16 @@
       :placeholder="'Filtrar por' + ': ' + selectedFilter"
       v-model="selectedOption"
       :clearable="false"
-      :optionLabel="renderOption"
+      :getOptionLabel="renderOption"
       :options="
         this.selectedFilter == 'Língua'
-          ? languages.map((lang) => lang.code)
+          ? languages
           : this.selectedFilter == 'Continente'
           ? ['Asia', 'Africa', 'Americas', 'Europe', 'Oceania']
           : this.selectedFilter == 'País'
-          ? countries.map((count) => count.name)
-          : this.selectedFilter == 'Código de discagem'
-          ? ['=>Códigos de discagem', '55', '51', '60', '93', '1']
+          ? countries
           : this.selectedFilter == 'Capital'
-          ? capitals.map((cap) => cap.capital)
+          ? capitals
           : ''
       "
     ></v-select>
@@ -68,6 +66,7 @@ import Pagination from "../../components/Pagination.vue";
 export default {
   name: "Home",
   components: { FlagCard, SearchButton, vSelect, Pagination },
+  props: { region: String },
 
   data() {
     return {
@@ -97,7 +96,7 @@ export default {
       console.log(` Opção = ${this.selectedOption}`);
 
       if (this.selectedFilter == "Língua") {
-        Country.countryLanguage(this.selectedOption).then((response) => {
+        Country.countryLanguage(this.selectedOption.code).then((response) => {
           this.countries = response.data;
           console.log(response.data);
         });
@@ -107,7 +106,7 @@ export default {
           console.log(response.data);
         });
       } else if (this.selectedFilter == "País") {
-        Country.countryName(this.selectedOption).then((response) => {
+        Country.countryName(this.selectedOption.name).then((response) => {
           this.countries = response.data;
           console.log(response.data);
         });
@@ -118,7 +117,7 @@ export default {
         });
       } else if (this.selectedFilter == "Capital") {
         Country.capitalCity(
-          this.selectedOption === null ? "all" : this.selectedOption
+          this.selectedOption === null ? "all" : this.selectedOption.capital
         ).then((response) => {
           this.countries = response.data;
           console.log(response.data);
@@ -131,18 +130,33 @@ export default {
     changeCode(evt) {
       this.selectedOption = evt.target.value;
     },
+    renderOption(opt) {
+      if (this.selectedFilter == "Língua") {
+        return opt.name;
+      } else if (this.selectedFilter == "País") {
+        return opt.name;
+      } else if (this.selectedFilter == "Capital") {
+        return opt.capital;
+      } else {
+        return opt;
+      }
+    },
   },
 
   created() {
-    Country.listar().then((response) => {
-      this.countries = response.data;
-      this.capitals = response.data;
-      console.log(response.data);
-    });
-
-    this.$watch("pageNumber", (newVal) => {
-      console.warn(newVal);
-    });
+    if (this.region) {
+      this.selectedFilter = "Continente";
+      this.selectedOption = this.region;
+      Country.countryRegion(this.region).then((response) => {
+        this.countries = response.data;
+      });
+    } else {
+      Country.listar().then((response) => {
+        this.countries = response.data;
+        this.capitals = response.data;
+        console.log(response.data);
+      });
+    }
   },
 };
 </script>
@@ -162,10 +176,32 @@ export default {
   width: 20vw;
   cursor: pointer;
 }
+
 #forsearch {
   margin: 2%;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+}
+@media (max-width: 480px) {
+  #forsearch {
+    margin: 2%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+  #sel {
+    width: 100vw;
+    cursor: pointer;
+    margin: 2%;
+  }
+
+  #flagcontainer {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    align-content: space-evenly;
+    justify-content: space-evenly;
+    justify-items: center;
+  }
 }
 </style>

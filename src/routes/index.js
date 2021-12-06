@@ -4,9 +4,10 @@ import Details from "../views/details/index.vue";
 
 const routes = [
   {
-    path: "/",
+    path: "/:region?",
     name: "Home",
     component: Home,
+    props: true,
   },
   {
     path: "/details/:alpha",
